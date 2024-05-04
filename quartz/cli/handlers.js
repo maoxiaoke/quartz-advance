@@ -1,6 +1,6 @@
 import { promises } from "fs"
 import path from "path"
-import esbuild from "esbuild"
+import * as esbuild from "esbuild-wasm"
 import chalk from "chalk"
 import { sassPlugin } from "esbuild-sass-plugin"
 import fs from "fs"
@@ -215,6 +215,11 @@ See the [documentation](https://quartz.jzhao.xyz) for how to get started.
  * @param {*} argv arguments for `build`
  */
 export async function handleBuild(argv) {
+  await esbuild.initialize({
+    worker: true,
+    wasmURL: "https://unpkg.com/esbuild-wasm@0.20.2/esbuild.wasm",
+  });
+
   console.log(chalk.bgGreen.black(`\n Quartz v${version} \n`))
   const ctx = await esbuild.context({
     entryPoints: [fp],

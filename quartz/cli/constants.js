@@ -11,5 +11,6 @@ export const cwd = process.cwd()
 export const cacheDir = path.join(cwd, ".quartz-cache")
 export const cacheFile = "./quartz/.quartz-cache/transpiled-build.mjs"
 export const fp = "./quartz/build.ts"
-export const { version } = JSON.parse(readFileSync("./package.json").toString())
+// export const { version } = JSON.parse(readFileSync("./package.json").toString())
+export const { version } = { version: "0.0.1" }
 export const contentCacheFolder = path.join(cacheDir, "content-cache")
