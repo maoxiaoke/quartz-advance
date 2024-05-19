@@ -11,6 +11,7 @@
     "url": "https://github.com/jackyzha0/quartz.git"
   },
   "scripts": {
+    "build": "ice-pkg build",
     "quartz": "./quartz/bootstrap-cli.mjs",
     "docs": "npx quartz build --serve -d docs",
     "check": "tsc --noEmit && npx prettier . --check",
@@ -36,12 +37,17 @@
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "@floating-ui/dom": "^1.6.3",
+    "@ice/jsx-runtime": "^0.2.2",
+    "@ice/pkg": "^1.5.21",
     "@napi-rs/simple-git": "0.1.16",
+    "@swc/helpers": "^0.5.11",
     "async-mutex": "^0.5.0",
     "chalk": "^5.3.0",
     "chokidar": "^3.6.0",
     "cli-spinner": "^0.2.10",
+    "core-js": "^3.37.1",
     "d3": "^7.9.0",
+    "esbuild": "^0.19.9",
     "esbuild-sass-plugin": "^2.16.1",
     "flexsearch": "0.7.43",
     "github-slugger": "^2.0.0",
@@ -84,14 +90,13 @@
     "source-map-support": "^0.5.21",
     "to-vfile": "^8.0.0",
     "toml": "^3.0.0",
+    "tsx": "^4.9.3",
     "unified": "^11.0.4",
     "unist-util-visit": "^5.0.0",
     "vfile": "^6.0.1",
     "workerpool": "^9.1.1",
     "ws": "^8.15.1",
-    "yargs": "^17.7.2",
-    "esbuild": "^0.19.9",
-    "tsx": "^4.9.3"
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@types/cli-spinner": "^0.2.3",

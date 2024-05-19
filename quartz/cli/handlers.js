@@ -542,3 +542,12 @@ export async function handleSync(argv) {
 
   console.log(chalk.green("Done!"))
 }
+
+
+export default {
+  handleCreate,
+  handleBuild,
+  handleUpdate,
+  handleRestore,
+  handleSync,
+}
