@@ -198,10 +198,11 @@ See the [documentation](https://quartz.jzhao.xyz) for how to get started.
   await fs.promises.writeFile(configFilePath, configContent)
 
   // setup remote
-  execSync(
-    `git remote show upstream || git remote add upstream https://github.com/jackyzha0/quartz.git`,
-    { stdio: "ignore" },
-  )
+  // todo
+  // execSync(
+  //   `git remote show upstream || git remote add upstream https://github.com/jackyzha0/quartz.git`,
+  //   { stdio: "ignore" },
+  // )
 
   outro(`You're all set! Not sure what to do next? Try:
   • Customizing Quartz a bit more by editing \`quartz.config.ts\`
@@ -309,7 +310,7 @@ export async function handleBuild(argv) {
 
     // bypass module cache
     // https://github.com/nodejs/modules/issues/307
-    const { default: buildQuartz } = await import(`../../${cacheFile}?update=${randomUUID()}`)
+    const { default: buildQuartz } = await import(`${cacheFile}?update=${randomUUID()}`)
     // ^ this import is relative, so base "cacheFile" path can't be used
 
     cleanupBuild = await buildQuartz(argv, buildMutex, clientRefresh)

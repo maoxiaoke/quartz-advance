@@ -105,4 +105,12 @@ export const BuildArgv = {
     number: true,
     describe: "how many threads to use to parse notes",
   },
+  staticDir: {
+    string: true,
+    describe: "directory to copy static files from",
+  },
+  userConfigPath: {
+    string: true,
+    describe: "path to user config file",
+  }
 }

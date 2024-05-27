@@ -11,6 +11,8 @@ export interface Argv {
   wsPort: number
   remoteDevHost?: string
   concurrency?: number
+  staticDir?: string
+  userConfigPath?: string
 }
 
 export interface BuildCtx {

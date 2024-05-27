@@ -513,6 +513,10 @@ ol.overflow {
     transition: opacity 0.3s ease;
     background: linear-gradient(transparent 0px, var(--light));
   }
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
 .transclude {

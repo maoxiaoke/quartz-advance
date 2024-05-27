@@ -20,6 +20,8 @@ import { Mutex } from "async-mutex"
 import DepGraph from "./depgraph"
 import { getStaticResourcesFromPlugins } from "./plugins"
 
+const getCwdPath = (fp: string) => fp
+
 type Dependencies = Record<string, DepGraph<FilePath> | null>
 
 type BuildData = {
@@ -39,14 +41,28 @@ type BuildData = {
 type FileEvent = "add" | "change" | "delete"
 
 async function buildQuartz(argv: Argv, mut: Mutex, clientRefresh: () => void) {
+  const a = (await import(argv.userConfigPath))?.default
+  let _cfg = cfg
+  if (argv.userConfigPath) {
+    _cfg = {
+      ...cfg,
+      ...(await import(argv.userConfigPath))?.default,
+    }
+  }
+
+  console.log("-----cfg", a, _cfg)
+
   const ctx: BuildCtx = {
     argv,
-    cfg,
+    cfg: _cfg,
     allSlugs: [],
   }
 
+  console.log("argv--", argv)
+
   const perf = new PerfTimer()
-  const output = argv.output
+
+  const output = getCwdPath(argv.output)
 
   const pluginCount = Object.values(cfg.plugins).flat().length
   const pluginNames = (key: "transformers" | "filters" | "emitters") =>
@@ -59,18 +75,20 @@ async function buildQuartz(argv: Argv, mut: Mutex, clientRefresh: () => void) {
   }
 
   const release = await mut.acquire()
+
+  const directory = getCwdPath(argv.directory)
+
   perf.addEvent("clean")
+  console.log("output", output)
   await rimraf(path.join(output, "*"), { glob: true })
   console.log(`Cleaned output directory \`${output}\` in ${perf.timeSince("clean")}`)
 
   perf.addEvent("glob")
-  const allFiles = await glob("**/*.*", argv.directory, cfg.configuration.ignorePatterns)
+  const allFiles = await glob("**/*.*", directory, cfg.configuration.ignorePatterns)
   const fps = allFiles.filter((fp) => fp.endsWith(".md")).sort()
-  console.log(
-    `Found ${fps.length} input files from \`${argv.directory}\` in ${perf.timeSince("glob")}`,
-  )
+  console.log(`Found ${fps.length} input files from \`${directory}\` in ${perf.timeSince("glob")}`)
 
-  const filePaths = fps.map((fp) => joinSegments(argv.directory, fp) as FilePath)
+  const filePaths = fps.map((fp) => joinSegments(directory, fp) as FilePath)
   ctx.allSlugs = allFiles.map((fp) => slugifyFilePath(fp as FilePath))
 
   const parsedFiles = await parseMarkdown(ctx, filePaths)
@@ -128,7 +146,7 @@ async function startServing(
 
   const watcher = chokidar.watch(".", {
     persistent: true,
-    cwd: argv.directory,
+    cwd: getCwdPath(argv.directory),
     ignoreInitial: true,
   })
 
@@ -169,7 +187,7 @@ async function partialRebuildFromEntrypoint(
   console.log(chalk.yellow("Detected change, rebuilding..."))
 
   // UPDATE DEP GRAPH
-  const fp = joinSegments(argv.directory, toPosixPath(filepath)) as FilePath
+  const fp = joinSegments(getCwdPath(argv.directory), toPosixPath(filepath)) as FilePath
 
   const staticResources = getStaticResourcesFromPlugins(ctx)
   let processedFiles: ProcessedContent[] = []
@@ -334,7 +352,7 @@ async function rebuildFromEntrypoint(
 
   // dont bother rebuilding for non-content files, just track and refresh
   fp = toPosixPath(fp)
-  const filePath = joinSegments(argv.directory, fp) as FilePath
+  const filePath = joinSegments(getCwdPath(argv.directory), fp) as FilePath
   if (path.extname(fp) !== ".md") {
     if (action === "add" || action === "change") {
       trackedAssets.add(filePath)
@@ -368,7 +386,7 @@ async function rebuildFromEntrypoint(
 
     const trackedSlugs = [...new Set([...contentMap.keys(), ...toRebuild, ...trackedAssets])]
       .filter((fp) => !toRemove.has(fp))
-      .map((fp) => slugifyFilePath(path.posix.relative(argv.directory, fp) as FilePath))
+      .map((fp) => slugifyFilePath(path.posix.relative(getCwdPath(argv.directory), fp) as FilePath))
 
     ctx.allSlugs = [...new Set([...initialSlugs, ...trackedSlugs])]
     const parsedContent = await parseMarkdown(ctx, filesToRebuild)

@@ -1,7 +1,7 @@
 {
   "name": "@nzha/quartz",
   "description": "🌱 publish your digital garden and notes as a website",
-  "version": "0.0.1",
+  "version": "0.0.10",
   "type": "module",
   "author": "jackyzha0 <j.zhao2k19@gmail.com>",
   "license": "MIT",
