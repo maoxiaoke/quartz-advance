@@ -41,24 +41,19 @@ type BuildData = {
 type FileEvent = "add" | "change" | "delete"
 
 async function buildQuartz(argv: Argv, mut: Mutex, clientRefresh: () => void) {
-  const a = (await import(argv.userConfigPath))?.default
-  let _cfg = cfg
-  if (argv.userConfigPath) {
-    _cfg = {
-      ...cfg,
-      ...(await import(argv.userConfigPath))?.default,
-    }
-  }
-
-  console.log("-----cfg", a, _cfg)
+  // let _cfg = cfg
+  // if (argv.userConfigPath) {
+  //   _cfg = {
+  //     ...cfg,
+  //     ...(await import(argv.userConfigPath))?.default,
+  //   }
+  // }
 
   const ctx: BuildCtx = {
     argv,
-    cfg: _cfg,
+    cfg: cfg,
     allSlugs: [],
   }
-
-  console.log("argv--", argv)
 
   const perf = new PerfTimer()
 
@@ -136,7 +131,8 @@ async function startServing(
     mut,
     dependencies,
     contentMap,
-    ignored: await isGitIgnored(),
+    // ignored: await isGitIgnored(),
+    ignored: () => false,
     initialSlugs: ctx.allSlugs,
     toRebuild: new Set<FilePath>(),
     toRemove: new Set<FilePath>(),

@@ -109,8 +109,8 @@ export const BuildArgv = {
     string: true,
     describe: "directory to copy static files from",
   },
-  userConfigPath: {
-    string: true,
-    describe: "path to user config file",
-  }
+  // userConfigPath: {
+  //   string: true,
+  //   describe: "path to user config file",
+  // }
 }

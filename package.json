@@ -1,14 +1,14 @@
 {
   "name": "@nzha/quartz",
-  "description": "🌱 publish your digital garden and notes as a website",
-  "version": "0.0.10",
+  "description": "🌱 publish your digital garden and notes as a website, a forked version",
+  "version": "1.0.0",
   "type": "module",
-  "author": "jackyzha0 <j.zhao2k19@gmail.com>",
+  "author": "nazha <maoxiaoke@outlook.com>",
   "license": "MIT",
-  "homepage": "https://quartz.jzhao.xyz",
+  "homepage": "https://www.nazha.co",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jackyzha0/quartz.git"
+    "url": "https://github.com/maoxiaoke/quartz-advance.git"
   },
   "scripts": {
     "quartz": "./quartz/bootstrap-cli.mjs",

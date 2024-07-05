@@ -12,7 +12,7 @@ export interface Argv {
   remoteDevHost?: string
   concurrency?: number
   staticDir?: string
-  userConfigPath?: string
+  // userConfigPath?: string
 }
 
 export interface BuildCtx {

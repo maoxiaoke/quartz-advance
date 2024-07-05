@@ -419,13 +419,14 @@ export async function handleBuild(argv) {
       ),
     )
     console.log("hint: exit with ctrl+c")
-    chokidar
-      .watch(["**/*.ts", "**/*.tsx", "**/*.scss", "package.json"], {
-        ignoreInitial: true,
-      })
-      .on("all", async () => {
-        build(clientRefresh)
-      })
+    // FIXME: todo
+    // chokidar
+    //   .watch(["**/*.ts", "**/*.tsx", "**/*.scss", "package.json"], {
+    //     ignoreInitial: true,
+    //   })
+    //   .on("all", async () => {
+    //     build(clientRefresh)
+    //   })
   } else {
     await build(() => {})
     ctx.dispose()

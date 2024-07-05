@@ -8,15 +8,15 @@ import { options } from "./util/sourcemap"
 
 // only called from worker thread
 export async function parseFiles(argv: Argv, fps: FilePath[], allSlugs: FullSlug[]) {
-  let _cfg = cfg
-  if (argv.userConfigPath) {
-    _cfg = {
-      ...cfg,
-      ...(await import(argv.userConfigPath)),
-    }
-  }
+  // let _cfg = cfg
+  // if (argv.userConfigPath) {
+  //   _cfg = {
+  //     ...cfg,
+  //     ...(await import(argv.userConfigPath)),
+  //   }
+  // }
   const ctx: BuildCtx = {
-    cfg: _cfg,
+    cfg: cfg,
     argv,
     allSlugs,
   }
